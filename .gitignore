@@ -1,0 +1,7 @@
+raylib/
+lib/
+include/
+.vscode/
+*.exe
+*.text
+*.o
