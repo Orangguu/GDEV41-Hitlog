@@ -1,13 +1,16 @@
 #include "Stage1.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "Enemy.hpp"
 #include "ResourceManager.hpp"
 #include <vector>
 #include <iostream>
 #include <algorithm>
 
+
+float spawnTimer = 0.0f;
+
 using namespace std;
-vector<Bullet> bullets;
 //vector<Enemy> enemies;
 void Stage1::update(float delta) {
     bulletTimer += delta;
@@ -38,6 +41,7 @@ void Stage1::update(float delta) {
         bullets.end()
     );
 
+
     // BULLET COLLISION (WALL AND ENEMY)
 
     // ENEMY COLLISION (PLAYER)
@@ -54,8 +58,27 @@ void Stage1::update(float delta) {
         );
     */
 
-    
+    spawnTimer += delta;
+    if (spawnTimer >= 3.0f){
+        spawnTimer = 0;
+
+        enemies.emplace_back();        // NEW ENEMY IN VECTOR
+        Enemy& e = enemies.back();     // REFERENCE IT
+        e.enemyType = 1;
+        e.spawn();
+    }
+
+    enemies.erase(
+        remove_if(enemies.begin(), enemies.end(),
+            [](const Enemy &e) { return !e.active; }),
+        enemies.end()
+    );
     // UPDATE PLAYER
+    for (Enemy &e : enemies){
+        e.targetPlayer = player;
+        e.update(delta);
+    }
+
     player.update(delta);
 }
 
@@ -65,6 +88,9 @@ void Stage1::draw() {
     DrawTexture(bgTexture, 0, 0, WHITE);
     for (Bullet &bullet : bullets) {
         bullet.draw();
+    }
+    for (Enemy &enemy : enemies) {
+        enemy.draw();
     }
     player.draw();
     EndDrawing();
@@ -79,8 +105,9 @@ void Stage1::enter() {
         player.animTexture = ResourceManager::getTexture("assets/entities/eggsy-sheet.png");
         player.texturesLoaded = true;
         
-        //Enemy::animTexture = ResourceManager::getTexture("assets/entities/enemy-sheet.png");
-        
+        // Load enemy texture
+        Enemy::defaultTexture = ResourceManager::getTexture("assets/entities/enemy-sheet.png");
+    
         // Load bullet texture
         Bullet::defaultTexture = ResourceManager::getTexture("assets/entities/bullet.png");
 

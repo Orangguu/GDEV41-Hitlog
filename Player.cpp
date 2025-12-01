@@ -4,7 +4,6 @@
 #include <iostream>
 
 void Player::update(float dt) {
-    Vector2 gunFrameCoord = {2, 0};
     Vector2 move = {0,0};
     // Movement input
     if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) move.y -= 1;

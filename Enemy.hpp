@@ -5,20 +5,28 @@
 #include <string>
 #include <vector>
 
-class Enemy {
-    protected:
-        int health;
-        int speed;
-        Vector2 size;
-        Vector2 pos;
-        std::unordered_map<std::string, std::vector<Texture*>> animations;
-        std::unordered_map<std::string, Sound*> sfx;
-        std::string currentAnimation;
-        int currentAnimationFrame;
-        Player targetPlayer;
-    public:
-        virtual void spawn() = 0;
-        virtual void update(float delta) = 0;
-        virtual void draw() = 0;
-        virtual void die() = 0;
+struct Enemy {
+    int health;
+    int speed;
+    int enemyType = 1;
+    float width = 30.0f;
+    float height = 30.0f;
+    bool active = true;
+    Vector2 size;
+    Vector2 pos;
+    Player targetPlayer;
+
+    //Textures
+    static Texture2D defaultTexture;
+    Texture2D texture;
+    bool texturesLoaded = false;
+    int spriteScale = 5;
+    int spriteFPS = 4;
+    int frameX;
+    int frameY;
+    
+    void update(float dt);
+    void draw() const;
+    void spawn();
+    void die();
 };
