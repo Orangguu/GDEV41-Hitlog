@@ -65,8 +65,8 @@ void Stage1::update(float delta) {
 
         enemies.emplace_back();        // NEW ENEMY IN VECTOR
         Enemy& e = enemies.back();     // REFERENCE IT
-        e.enemyType = 2;
-        e.spawn();
+        int randomType = (rand() % 2) + 1;
+        e.spawn(randomType);
     }
 
    

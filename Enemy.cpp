@@ -12,11 +12,13 @@
 // then inserted into "sprites" with the name of the animation
 
 Texture2D Enemy::defaultTexture = {0};
-void Enemy::spawn() {
+void Enemy::spawn(int type) {
+    enemyType = type;
+    frameX = 0;
     if(enemyType == 1){
         health = 100;
         speed = 20;
-        frameX = 0;
+        frameY = 0;
     }
     if(enemyType == 2){
         health = 50;
@@ -44,6 +46,8 @@ void Enemy::spawn() {
     }
     pos = {spawnPosX, spawnPosY};
 
+    facingRight = !isSpawningLeft;
+
 
 // Define static texture storage
     texture = defaultTexture;
@@ -52,38 +56,46 @@ void Enemy::spawn() {
 
 
 void Enemy::update(float delta) {
-    Vector2 enemyCenter = { pos.x, pos.y};
-    Vector2 playerCenter = { targetPlayer.pos.x + targetPlayer.width / 2.0f,
-                         targetPlayer.pos.y + targetPlayer.height / 2.0f };
-    
-    // Vector2 direction = Vector2Normalize(Vector2Subtract(playerCenter, enemyCenter));
     Vector2 direction = Vector2Normalize(Vector2Subtract(targetPlayer.pos, pos));
 
-    float speed = 150.0f;
-    pos = Vector2Add(pos, Vector2Scale(direction, speed * delta));
+    // update facing direction based on horizontal movement
+    facingRight = (direction.x >= 0);
 
+    float speedValue = 150.0f; // could use enemy-specific speed if needed
+    pos = Vector2Add(pos, Vector2Scale(direction, speedValue * delta));
+
+    // animate frames
     animTimer += delta;
     if (animTimer >= 1.0f / spriteFPS) {
         animTimer = 0;
         frameX++;
-        if(enemyType == 1 && frameX == 9) frameX = 0;
-        if(enemyType == 2 && frameX == 13) frameX = 0;
+        if(enemyType == 1 && frameX >= 10) frameX = 0; // bacon has 10 frames
+        if(enemyType == 2 && frameX >= 14) frameX = 0; // bread has 14 frames
     }
 }
 
-void Enemy::draw() const{
-    if (texturesLoaded) {
-        Rectangle origFrame = { frameX * frameSize, frameY * frameSize, frameSize, frameSize };        
-        float nudgeX = -frameSize / 2 * spriteScale;
-        float nudgeY = -frameSize / 2 * spriteScale;
-        Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
-        DrawTexturePro(texture, origFrame, dest, {0, 0}, 0, WHITE);
-
-        // Debug: show actual pos
-        // DrawCircleV(pos, radius, ORANGE);
-    } else {
+void Enemy::draw() const {
+    if (!texturesLoaded) {
         DrawCircleV(pos, radius, ORANGE);
+        return;
     }
+
+    // decide which row in the sprite sheet
+    int row = 0;
+    if(enemyType == 1) { // bacon
+        row = facingRight ? 0 : 1;
+    } else if(enemyType == 2) { // bread
+        row = facingRight ? 2 : 3;
+    }
+
+    Rectangle origFrame = { frameX * frameSize, row * frameSize, frameSize, frameSize };
+
+    float nudgeX = -frameSize / 2 * spriteScale;
+    float nudgeY = -frameSize / 2 * spriteScale;
+
+    Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
+
+    DrawTexturePro(texture, origFrame, dest, {0,0}, 0, WHITE);
 }
 
 void Enemy::die() {

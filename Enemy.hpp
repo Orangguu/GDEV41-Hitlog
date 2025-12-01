@@ -16,6 +16,7 @@ struct Enemy {
     bool active = true;
     Vector2 pos;
     Player targetPlayer;
+    bool facingRight = true;
 
     //Textures
     static Texture2D defaultTexture;
@@ -32,6 +33,6 @@ struct Enemy {
     
     void update(float dt);
     void draw() const;
-    void spawn();
+    void spawn(int type);
     void die();
 };
