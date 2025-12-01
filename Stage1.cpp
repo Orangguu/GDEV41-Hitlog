@@ -91,3 +91,7 @@ void Stage1::enter() {
 
 void Stage1::exit() {
 }
+
+Vector2 Stage1::getPlayerPos() {
+    return {Stage1::player.pos.x, Stage1::player.pos.y};
+}

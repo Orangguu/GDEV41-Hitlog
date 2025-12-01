@@ -3,6 +3,8 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
 #include <raylib.h>
+#include "Enemy.hpp"
+#include <vector>
 
 class Stage1 : public Scene {
     private:
@@ -10,7 +12,7 @@ class Stage1 : public Scene {
         float bulletTimer = bulletCooldown;
         Bullet bullet;
         Player player;
-
+        std::vector<Enemy> enemies;
         Texture2D bgTexture;
     
     public:
@@ -18,4 +20,5 @@ class Stage1 : public Scene {
         void update(float delta) override;
         void draw() override;
         void exit() override;
+        Vector2 getPlayerPos();
 };
