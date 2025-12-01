@@ -1,12 +1,8 @@
 #pragma once
 #include <raylib.h>
-
 #include <string>
 
 struct UILibrary {
-    int WINDOW_WIDTH = 0;
-    int WINDOW_HEIGHT = 0;
-
     int hot = -1;
     int active = -1;
     

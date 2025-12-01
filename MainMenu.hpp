@@ -1,12 +1,15 @@
 #pragma once
+#include "globals.hpp"
 #include "UILibrary.hpp"
+#include "Scene.hpp"
 
-struct MainMenu {
-    int WINDOW_WIDTH = 0;
-    int WINDOW_HEIGHT = 0;
-
-    UILibrary ui;
-
-    MainMenu(int windowWidth, int windowHeight);
-    void update(float delta);
+class MainMenu : public Scene {
+    private:
+        UILibrary ui;
+    
+    public:
+        void enter() override;
+        void update(float delta) override;
+        void draw() override;
+        void exit() override;
 };

@@ -2,11 +2,6 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
 
-Stage1::Stage1(int windowWidth, int windowHeight) {
-    WINDOW_WIDTH = windowWidth;
-    WINDOW_HEIGHT = windowHeight;
-}
-
 void Stage1::update(float delta) {
     bulletTimer += delta;
 
@@ -21,8 +16,16 @@ void Stage1::update(float delta) {
     player.update(delta);
 }
 
-void Stage1::draw() const {
+void Stage1::draw() {
+    BeginDrawing();
     ClearBackground(BLACK);
     bullet.draw();
     player.draw();
+    EndDrawing();
+}
+
+void Stage1::enter() {
+}
+
+void Stage1::exit() {
 }
