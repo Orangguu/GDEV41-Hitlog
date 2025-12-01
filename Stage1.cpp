@@ -57,6 +57,7 @@ void Stage1::update(float delta) {
     
     // UPDATE PLAYER
     player.update(delta);
+    hud.update(delta);
 }
 
 
@@ -67,6 +68,7 @@ void Stage1::draw() {
         bullet.draw();
     }
     player.draw();
+    hud.draw();
     EndDrawing();
 }
 

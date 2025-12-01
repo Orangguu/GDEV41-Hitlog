@@ -1,12 +1,5 @@
 #include "UILibrary.hpp"
 
-#include <raylib.h>
-#include <raymath.h>
-
-#include <functional>
-#include <string>
-#include <vector>
-
 UILibrary::UILibrary() {
     font = LoadFontEx("assets/fonts/jersey10.ttf", 256, 0, 0);
 }
@@ -15,7 +8,7 @@ UILibrary::~UILibrary() {
     UnloadFont(font);
 }
 
-void UILibrary::text(int id, const std::string& text, const Rectangle& bounds, float fontSize) {
+void UILibrary::text(int id, const std::string& text, const Rectangle& bounds, float fontSize, Color textColor) {
     if (id == active) {
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             if (id == hot) {
@@ -39,7 +32,7 @@ void UILibrary::text(int id, const std::string& text, const Rectangle& bounds, f
     }
 
     Vector2 textSize = MeasureTextEx(font, text.c_str(), fontSize, 0);
-    DrawTextEx(font, text.c_str(), (Vector2){(bounds.x + ((bounds.width - textSize.x) / 2)), (bounds.y + ((bounds.height - textSize.y) / 2))}, fontSize, 0, BLACK);
+    DrawTextEx(font, text.c_str(), (Vector2){(bounds.x + ((bounds.width - textSize.x) / 2)), (bounds.y + ((bounds.height - textSize.y) / 2))}, fontSize, 0, textColor);
 }
 
 bool UILibrary::button(int id, const std::string& text, const Rectangle& bounds, float fontSize) {
@@ -89,4 +82,35 @@ bool UILibrary::button(int id, const std::string& text, const Rectangle& bounds,
     DrawTextEx(font, text.c_str(), (Vector2){(bounds.x + ((bounds.width - textSize.x) / 2)), (bounds.y + ((bounds.height - textSize.y) / 2))}, fontSize, 0, textColor);
 
     return result;
+}
+
+int UILibrary::progressBar(int id, const Rectangle& bounds, int progressCurrentValue, int progressMaxValue, Color progressColor) {
+    float segmentSize = bounds.width / progressMaxValue;
+
+    if (id == active) {
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            if (id == hot) {
+            }
+
+            active = -1;
+        }
+    }
+
+    if (id == hot) {
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            active = id;
+        }
+    }
+
+    if (CheckCollisionPointRec(GetMousePosition(), bounds)) {
+        hot = id;
+    }
+    else if (hot == id) {
+        hot = -1;
+    }
+
+    DrawRectangleRec(bounds, GRAY);
+    DrawRectangleRec({bounds.x, bounds.y, (segmentSize * progressCurrentValue), bounds.height}, progressColor);
+
+    return progressCurrentValue;
 }
