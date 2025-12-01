@@ -1,6 +1,7 @@
 #include "Bullet.hpp"
 #include <cmath>
 
+Texture2D Bullet::defaultTexture = {0};
 void Bullet::fire(Vector2 startPos, Vector2 target) {
     pos = startPos;
 
@@ -12,7 +13,10 @@ void Bullet::fire(Vector2 startPos, Vector2 target) {
         dir.x /= len;
         dir.y /= len;
     }
-
+    
+    texture = defaultTexture;
+    texturesLoaded = true;
+    rotation = static_cast<float>(rand() % 360);
     active = true;
 }
 
@@ -31,5 +35,11 @@ void Bullet::update(float dt) {
 
 void Bullet::draw() const {
     if (!active) return; // only draw if active
-    DrawCircleV(pos, radius, Color{240, 216, 225, 255});
+
+    if(texturesLoaded){
+        Rectangle origFrame = { frameSize.x, frameSize.y, frameSize.x, frameSize.y, };
+        Rectangle dest = { pos.x, pos.y, frameSize.x * spriteScale, frameSize.y * spriteScale };
+        Vector2 origin = { radius, radius }; // rotate around center
+        DrawTexturePro(texture, origFrame, dest, origin, rotation, WHITE);
+    } else DrawCircleV(pos, radius, Color{240, 216, 225, 255});
 }
