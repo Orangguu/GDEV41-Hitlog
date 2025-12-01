@@ -8,10 +8,11 @@
 
 using namespace std;
 vector<Bullet> bullets;
+//vector<Enemy> enemies;
 void Stage1::update(float delta) {
     bulletTimer += delta;
 
-    // SHOOT — create a NEW bullet
+    // BULLET HANDLING
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && bulletTimer >= bulletCooldown) {
         Bullet b;
 
@@ -27,7 +28,7 @@ void Stage1::update(float delta) {
     }
 
     // UPDATE ALL BULLETS
-    for (auto &b : bullets)
+    for (Bullet &b : bullets)
         b.update(delta);
 
     // REMOVE INACTIVE BULLETS
@@ -37,6 +38,24 @@ void Stage1::update(float delta) {
         bullets.end()
     );
 
+    // BULLET COLLISION (WALL AND ENEMY)
+
+    // ENEMY COLLISION (PLAYER)
+    /*
+        for(Enemy &e : enemies)
+            e.update(delta)
+            e.checkCollision
+
+        // REMOVE DEAD ENEMIES
+        enemies.erase(
+            remove_if(bullets.begin(), bullets.end(),
+                [](const Bullet &b) { return !b.active; }),
+            bullets.end()
+        );
+    */
+
+    
+    // UPDATE PLAYER
     player.update(delta);
 }
 
@@ -58,14 +77,13 @@ void Stage1::enter() {
         
         // Load player texture
         player.animTexture = ResourceManager::getTexture("assets/entities/eggsy-sheet.png");
-        
-        // Optionally initialize width/height from the texture
-        player.width = static_cast<float>(player.animTexture.width / 6); // assuming 5 frames in X
-        player.height = static_cast<float>(player.animTexture.height / 6); // adjust rows
-
         player.texturesLoaded = true;
+        
+        //Enemy::animTexture = ResourceManager::getTexture("assets/entities/enemy-sheet.png");
+        
+        // Load bullet texture
+        Bullet::defaultTexture = ResourceManager::getTexture("assets/entities/bullet.png");
 
-        ResourceManager::getTexture("assets/entities/enemy-sheet.png");
     } catch (const std::exception& e) {
         std::cerr << "Failed to load Stage1 assets: " << e.what() << std::endl;
     }

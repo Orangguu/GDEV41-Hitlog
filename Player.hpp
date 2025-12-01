@@ -14,11 +14,11 @@ enum Direction {
 
 
 struct Player {
-    //TEMP
+    //Initial position
     float radius = 30.0f;
     Color color = BLUE;
-
-    Vector2 pos = {200, 200};
+    int health = 6;
+    Vector2 pos;
 
     //Size of the grid
     float width = 30.0f;
@@ -42,6 +42,7 @@ struct Player {
     int spriteScale = 5;
     int spriteFPS = 4;
 
+    // Dashing
     bool is_dashing = false;
     float dashDistance = 300.0f;
     float dashDuration = 0.3f;     // How long the dash lasts (seconds)
