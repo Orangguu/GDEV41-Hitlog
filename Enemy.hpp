@@ -8,11 +8,12 @@
 struct Enemy {
     int health;
     int speed;
-    int enemyType = 1;
-    float width = 30.0f;
-    float height = 30.0f;
+
+    //enemyType 1 for BACON
+    //enemyType 2 for BREAD
+    int enemyType = 1; 
+    float radius = 80.0f;
     bool active = true;
-    Vector2 size;
     Vector2 pos;
     Player targetPlayer;
 
@@ -21,9 +22,13 @@ struct Enemy {
     Texture2D texture;
     bool texturesLoaded = false;
     int spriteScale = 5;
-    int spriteFPS = 4;
+    int spriteFPS = 10;
+
+    //32 by 32 sprite
+    float frameSize = 32.0f;
     int frameX;
     int frameY;
+    float animTimer = 0.0f;
     
     void update(float dt);
     void draw() const;

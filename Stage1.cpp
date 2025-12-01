@@ -10,6 +10,12 @@
 
 float spawnTimer = 0.0f;
 
+
+//HELPER FUNCTIONS
+bool checkCollision(const Bullet &b, const Enemy &e) {
+    return CheckCollisionCircles(b.pos, b.radius, e.pos, e.radius);
+}
+
 using namespace std;
 //vector<Enemy> enemies;
 void Stage1::update(float delta) {
@@ -34,12 +40,7 @@ void Stage1::update(float delta) {
     for (Bullet &b : bullets)
         b.update(delta);
 
-    // REMOVE INACTIVE BULLETS
-    bullets.erase(
-        remove_if(bullets.begin(), bullets.end(),
-            [](const Bullet &b) { return !b.active; }),
-        bullets.end()
-    );
+   
 
 
     // BULLET COLLISION (WALL AND ENEMY)
@@ -64,8 +65,28 @@ void Stage1::update(float delta) {
 
         enemies.emplace_back();        // NEW ENEMY IN VECTOR
         Enemy& e = enemies.back();     // REFERENCE IT
-        e.enemyType = 1;
+        e.enemyType = 2;
         e.spawn();
+    }
+
+   
+    // UPDATE PLAYER
+    for (Enemy &e : enemies){
+        e.targetPlayer = player;
+        e.update(delta);
+    }
+
+    for (Bullet &b : bullets) {
+        for (Enemy &e : enemies) {
+            if (!b.active || !e.active) continue;
+            if (checkCollision(b, e)) {
+                b.active = false;          // bullet disappears
+                e.health -= 25;            // reduce enemy health (adjust damage as needed)
+                if (e.health <= 0) {
+                    e.active = false;      // enemy dies
+                }
+            }
+        }
     }
 
     enemies.erase(
@@ -73,11 +94,13 @@ void Stage1::update(float delta) {
             [](const Enemy &e) { return !e.active; }),
         enemies.end()
     );
-    // UPDATE PLAYER
-    for (Enemy &e : enemies){
-        e.targetPlayer = player;
-        e.update(delta);
-    }
+
+     // REMOVE INACTIVE BULLETS
+    bullets.erase(
+        remove_if(bullets.begin(), bullets.end(),
+            [](const Bullet &b) { return !b.active; }),
+        bullets.end()
+    );
 
     player.update(delta);
 }
@@ -119,6 +142,3 @@ void Stage1::enter() {
 void Stage1::exit() {
 }
 
-Vector2 Stage1::getPlayerPos() {
-    return {Stage1::player.pos.x, Stage1::player.pos.y};
-}

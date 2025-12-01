@@ -16,12 +16,12 @@ void Enemy::spawn() {
     if(enemyType == 1){
         health = 100;
         speed = 20;
-        size = {100, 100};
+        frameX = 0;
     }
     if(enemyType == 2){
         health = 50;
         speed = 100;
-        size = {50, 50};
+        frameY = 2;
     }
 
     bool isSpawningTop = (rand() > (RAND_MAX / 2)) ? true : false;
@@ -52,19 +52,36 @@ void Enemy::spawn() {
 
 
 void Enemy::update(float delta) {
-    Vector2 direction = Vector2Normalize(Vector2Subtract(targetPlayer.pos, pos));
+    Vector2 enemyCenter = { pos.x, pos.y - (frameSize * spriteScale) / 2.0f };
+    Vector2 playerCenter = { targetPlayer.pos.x + targetPlayer.width / 2.0f,
+                         targetPlayer.pos.y + targetPlayer.height / 2.0f };
+    
+    Vector2 direction = Vector2Normalize(Vector2Subtract(playerCenter, enemyCenter));
     float speed = 150.0f;
     pos = Vector2Add(pos, Vector2Scale(direction, speed * delta));
+
+    animTimer += delta;
+    if (animTimer >= 1.0f / spriteFPS) {
+        animTimer = 0;
+        frameX++;
+        if(enemyType == 1 && frameX == 9) frameX = 0;
+        if(enemyType == 2 && frameX == 13) frameX = 0;
+    }
 }
 
 void Enemy::draw() const{
     if (texturesLoaded) {
-        //Player frames
-        Rectangle origFrame = { frameX * width, frameY * height, width, height };
-        Rectangle dest = { pos.x, pos.y, width * spriteScale, height * spriteScale };
-        DrawTexturePro(texture, origFrame, dest, {0, 0}, 0, WHITE);
+        Rectangle origFrame = { frameX * frameSize, frameY * frameSize, frameSize, frameSize };
+        Vector2 origin = { frameSize / 2.0f, frameSize };
+        float nudgeX = -frameSize / 2 * spriteScale;
+        float nudgeY = -frameSize / 2 * spriteScale;
+        Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
+        DrawTexturePro(texture, origFrame, dest, origin, 0, WHITE);
+
+        // Debug: show actual pos
+        DrawCircleV(pos, radius, ORANGE);
     } else {
-        DrawCircleV(pos, width, ORANGE);
+        DrawCircleV(pos, radius, ORANGE);
     }
 }
 
