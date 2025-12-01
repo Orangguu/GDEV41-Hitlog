@@ -43,7 +43,7 @@ void Stage1::update(float delta) {
 
 void Stage1::draw() {
     BeginDrawing();
-    ClearBackground(BLACK);
+    DrawTexture(bgTexture, 0, 0, WHITE);
     for (Bullet &bullet : bullets) {
         bullet.draw();
     }
@@ -53,6 +53,9 @@ void Stage1::draw() {
 
 void Stage1::enter() {
     try {
+        // Load background texture
+        bgTexture = ResourceManager::getTexture("assets/backgrounds/tabletop-bg.png");
+        
         // Load player texture
         player.animTexture = ResourceManager::getTexture("assets/entities/eggsy-sheet.png");
         
