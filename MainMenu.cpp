@@ -1,10 +1,14 @@
 #include "MainMenu.hpp"
+#include "ResourceManager.hpp"
 #include "raylib.h"
 
 void MainMenu::draw() {
     BeginDrawing();
-    ClearBackground(WHITE);
-    ui.text(0, "Hitlog", {473, 243, 536, 268}, 250, BLACK);
+    
+    if (bgTexture.id != 0) {
+        DrawTexture(bgTexture, 0, 0, WHITE);
+    }
+
     if (ui.button(1, "Start Game", {611, 565, 258, 58}, 48)) {
         Globals::sceneManager->switchScene(1);
     }
@@ -14,6 +18,7 @@ void MainMenu::draw() {
 
 void MainMenu::enter() {
     bgMusic = LoadSound("./assets/music/music_main_menu.wav");
+    bgTexture = ResourceManager::getTexture("assets/backgrounds/title-screen.png");
     PlaySound(bgMusic);
 }
 

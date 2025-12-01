@@ -64,16 +64,16 @@ bool UILibrary::button(int id, const std::string& text, const Rectangle& bounds,
     }
 
     if (active == id) {
-        bgColor = BLACK;
+        bgColor = { 190, 59, 9, 255 };
         textColor = WHITE;
     }
     else if (hot == id) {
-        bgColor = DARKGRAY;
-        textColor = BLACK;
+        bgColor = { 156, 14, 62, 255 };
+        textColor = WHITE;
     }
     else {
-        bgColor = GRAY;
-        textColor = BLACK;
+        bgColor = { 102, 32, 5, 255 };
+        textColor = WHITE;
     }
 
     Vector2 textSize = MeasureTextEx(font, text.c_str(), fontSize, 0);

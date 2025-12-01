@@ -6,6 +6,7 @@
 class MainMenu : public Scene {
     private:
         UILibrary ui;
+        Texture2D bgTexture;
     
     public:
         Sound bgMusic;
