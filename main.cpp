@@ -10,6 +10,7 @@ const int FPS = 60;
 int main() {
     SetTargetFPS(FPS);
     InitWindow(Globals::WINDOW_WIDTH, Globals::WINDOW_HEIGHT, "Pew Pew Pew");
+    InitAudioDevice();
 
     Globals::sceneManager = new SceneManager();
     MainMenu* mainMenu = new MainMenu();
@@ -29,6 +30,7 @@ int main() {
             activeScene->draw();
         }
     }
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }

@@ -13,10 +13,16 @@ void MainMenu::draw() {
 }
 
 void MainMenu::enter() {
+    bgMusic = LoadSound("./assets/music/music_main_menu.wav");
+    PlaySound(bgMusic);
 }
 
 void MainMenu::update(float delta) {
+    if (!IsSoundPlaying(bgMusic)) {
+        PlaySound(bgMusic);
+    }
 }
 
 void MainMenu::exit() {
+    UnloadSound(bgMusic);
 }
