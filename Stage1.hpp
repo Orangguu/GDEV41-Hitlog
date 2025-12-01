@@ -5,6 +5,7 @@
 #include <raylib.h>
 #include "Enemy.hpp"
 #include <vector>
+#include "HUD.hpp"
 
 class Stage1 : public Scene {
     private:
@@ -14,6 +15,8 @@ class Stage1 : public Scene {
         Player player;
         std::vector<Bullet> bullets;
         std::vector<Enemy> enemies;
+        HUD hud;
+
         Texture2D bgTexture;
     
     public:

@@ -103,6 +103,7 @@ void Stage1::update(float delta) {
     );
 
     player.update(delta);
+    hud.update(delta);
 }
 
 
@@ -116,6 +117,7 @@ void Stage1::draw() {
         enemy.draw();
     }
     player.draw();
+    hud.draw();
     EndDrawing();
 }
 
