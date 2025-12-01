@@ -4,6 +4,6 @@
 // it will not worked if initialized here
 // (for reasons i am yet to discover)
 
-int Globals::WINDOW_HEIGHT = 900;
-int Globals::WINDOW_WIDTH = 1200;
+int Globals::WINDOW_HEIGHT = 1000;
+int Globals::WINDOW_WIDTH = 1500;
 SceneManager* Globals::sceneManager = nullptr;
