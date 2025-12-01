@@ -8,6 +8,7 @@ class MainMenu : public Scene {
         UILibrary ui;
     
     public:
+        Sound bgMusic;
         void enter() override;
         void update(float delta) override;
         void draw() override;
