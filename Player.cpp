@@ -95,9 +95,12 @@ void Player::update(float dt) {
 void Player::draw() const {
     if (texturesLoaded) {
         //Player frames
-        Rectangle origFrame = { frameX * width, frameY * height, width, height };
-        Rectangle dest = { pos.x, pos.y, width * spriteScale, height * spriteScale };
+        Rectangle origFrame = { frameX * frameSize, frameY * frameSize, frameSize, frameSize};
+        float nudgeX = -frameSize / 2 * spriteScale;
+        float nudgeY = -frameSize / 2 * spriteScale;
+        Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
         DrawTexturePro(animTexture, origFrame, dest, {0, 0}, 0, WHITE);
+        //DrawCircleV(pos, radius, color);
     } else {
         // Fallback circle while loading
         if(is_dashing) DrawCircleV(pos, radius, ORANGE);

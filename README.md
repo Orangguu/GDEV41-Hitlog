@@ -13,7 +13,8 @@ g++ -c MainMenu.cpp -I raylib/
 g++ -c SceneManager.cpp -I raylib/
 g++ -c ResourceManager.cpp -I raylib/
 g++ -c Enemy.cpp -I raylib/
-g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+g++ -c HUD.cpp -I raylib/
+g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o HUD.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
 ```
 
 raylib documentation: https://www.raylib.com/cheatsheet/cheatsheet.html

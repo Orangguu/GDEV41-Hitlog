@@ -21,6 +21,7 @@ struct Player {
     Vector2 pos;
 
     //Size of the grid
+    float frameSize = 30.0f;
     float width = 30.0f;
     float height = 30.0f;
     int speed = 300;
@@ -41,6 +42,11 @@ struct Player {
     bool texturesLoaded = false;
     int spriteScale = 5;
     int spriteFPS = 4;
+
+    // On hit animation
+    bool isHit = false;
+    float hitTimer = 0.0f;
+    float flashDuration = 0.15f; // seconds
 
     // Dashing
     bool is_dashing = false;

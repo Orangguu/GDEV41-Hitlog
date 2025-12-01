@@ -52,11 +52,13 @@ void Enemy::spawn() {
 
 
 void Enemy::update(float delta) {
-    Vector2 enemyCenter = { pos.x, pos.y - (frameSize * spriteScale) / 2.0f };
+    Vector2 enemyCenter = { pos.x, pos.y};
     Vector2 playerCenter = { targetPlayer.pos.x + targetPlayer.width / 2.0f,
                          targetPlayer.pos.y + targetPlayer.height / 2.0f };
     
-    Vector2 direction = Vector2Normalize(Vector2Subtract(playerCenter, enemyCenter));
+    // Vector2 direction = Vector2Normalize(Vector2Subtract(playerCenter, enemyCenter));
+    Vector2 direction = Vector2Normalize(Vector2Subtract(targetPlayer.pos, pos));
+
     float speed = 150.0f;
     pos = Vector2Add(pos, Vector2Scale(direction, speed * delta));
 
@@ -71,15 +73,14 @@ void Enemy::update(float delta) {
 
 void Enemy::draw() const{
     if (texturesLoaded) {
-        Rectangle origFrame = { frameX * frameSize, frameY * frameSize, frameSize, frameSize };
-        Vector2 origin = { frameSize / 2.0f, frameSize };
+        Rectangle origFrame = { frameX * frameSize, frameY * frameSize, frameSize, frameSize };        
         float nudgeX = -frameSize / 2 * spriteScale;
         float nudgeY = -frameSize / 2 * spriteScale;
         Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
-        DrawTexturePro(texture, origFrame, dest, origin, 0, WHITE);
+        DrawTexturePro(texture, origFrame, dest, {0, 0}, 0, WHITE);
 
         // Debug: show actual pos
-        DrawCircleV(pos, radius, ORANGE);
+        // DrawCircleV(pos, radius, ORANGE);
     } else {
         DrawCircleV(pos, radius, ORANGE);
     }

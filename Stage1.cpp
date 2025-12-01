@@ -26,8 +26,8 @@ void Stage1::update(float delta) {
         Bullet b;
 
         Vector2 startPos = {
-            player.pos.x + player.width * 2.5f,
-            player.pos.y + player.height * 2.5f
+            player.pos.x,
+            player.pos.y
         };
 
         b.fire(startPos, GetMousePosition());
