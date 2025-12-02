@@ -17,7 +17,7 @@ struct Player {
     //Initial position
     float radius = 30.0f;
     Color color = BLUE;
-    int health = 6;
+    int health = 2;
     Vector2 pos;
 
     //Size of the grid
@@ -44,9 +44,9 @@ struct Player {
     int spriteFPS = 4;
 
     // On hit animation
-    bool isHit = false;
-    float hitTimer = 0.0f;
-    float flashDuration = 0.15f; // seconds
+    float hitFlashTimer = 0.0f;
+    float hitFlashDuration = 0.2f; // 200ms flash
+    bool wasHit = false;
 
     // Dashing
     bool is_dashing = false;
@@ -59,4 +59,5 @@ struct Player {
 
     void update(float dt);
     void draw() const;
+    void takeDamage(int dmg);
 };

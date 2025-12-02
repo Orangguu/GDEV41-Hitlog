@@ -14,7 +14,9 @@ g++ -c SceneManager.cpp -I raylib/
 g++ -c ResourceManager.cpp -I raylib/
 g++ -c Enemy.cpp -I raylib/
 g++ -c HUD.cpp -I raylib/
-g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o HUD.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+g++ -c GameOver.cpp -I raylib/
+g++ -c LeaderBoard.cpp -I raylib/
+g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o HUD.o GameOver.o LeaderBoard.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
 ```
 
 raylib documentation: https://www.raylib.com/cheatsheet/cheatsheet.html

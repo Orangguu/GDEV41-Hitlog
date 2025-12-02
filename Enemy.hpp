@@ -19,13 +19,13 @@ struct Enemy {
     bool facingRight = true;
 
     // bacon (shooting enemy) properties
-    float shootRange = 400.0f;
+    float shootRange = 500.0f;
     float shootCooldown = 2.0f;
     float shootTimer = 0.0f;
     
     // bread (melee enemy) properties
     float collisionTimer = 0.0f;
-    float damageInterval = 3.0f;
+    float damageInterval = 1.0f;
     bool isCollidingWithPlayer = false;
     int meleeDamage = 1;
 
@@ -35,6 +35,11 @@ struct Enemy {
     bool texturesLoaded = false;
     int spriteScale = 5;
     int spriteFPS = 10;
+
+    // On hit animation  flashing
+    float hitFlashTimer = 0.0f;
+    float hitFlashDuration = 0.2f; // 200ms flash
+    bool wasHit = false;
 
     //32 by 32 sprite
     float frameSize = 32.0f;
@@ -46,4 +51,5 @@ struct Enemy {
     void draw() const;
     void spawn(int type);
     void die();
+    void takeDamage(int dmg);
 };

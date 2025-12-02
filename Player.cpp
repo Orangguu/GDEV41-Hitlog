@@ -63,6 +63,12 @@ void Player::update(float dt) {
     // Update idle
     is_idle = (!is_dashing && normMove.x == 0 && normMove.y == 0);
 
+    // animate onHit
+    if (hitFlashTimer > 0) {
+        hitFlashTimer -= dt;
+        if (hitFlashTimer < 0) hitFlashTimer = 0;
+    }
+
     // Animation timer
     animTimer += dt;
     if (animTimer >= 1.0f / spriteFPS) {
@@ -101,9 +107,22 @@ void Player::draw() const {
         Rectangle dest = { pos.x + nudgeX, pos.y + nudgeY, frameSize * spriteScale, frameSize * spriteScale };
         DrawTexturePro(animTexture, origFrame, dest, {0, 0}, 0, WHITE);
         //DrawCircleV(pos, radius, color);
+
+        if (hitFlashTimer > 0) {
+            Color flash = {255, 0, 0, (unsigned char)(200 * (hitFlashTimer / hitFlashDuration))};
+            BeginBlendMode(BLEND_ADDITIVE);
+            DrawTexturePro(animTexture, origFrame, dest, {0,0}, 0, flash);
+            EndBlendMode();
+        }
     } else {
         // Fallback circle while loading
         if(is_dashing) DrawCircleV(pos, radius, ORANGE);
         else DrawCircleV(pos, radius, color);
     }
+}
+
+void Player::takeDamage(int dmg){
+    health -= dmg;
+    wasHit = true;
+    hitFlashTimer = hitFlashDuration;
 }

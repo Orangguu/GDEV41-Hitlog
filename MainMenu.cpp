@@ -9,10 +9,20 @@ void MainMenu::draw() {
         DrawTexture(bgTexture, 0, 0, WHITE);
     }
 
+        // Start Game button
     if (ui.button(1, "Start Game", {611, 565, 258, 58}, 48)) {
-        Globals::sceneManager->switchScene(1);
+        Globals::sceneManager->switchScene(1); // go to Stage 1
     }
-    ui.button(2, "Settings", {646, 664, 188, 58}, 48);
+
+    // Leaderboard button
+    if (ui.button(2, "Leaderboard", {611, 635, 258, 58}, 48)) {
+        Globals::sceneManager->switchScene(3); // go to LeaderBoard scene
+    }
+
+    // Settings button
+    if (ui.button(3, "Settings", {646, 705, 188, 58}, 48)) {
+        // open settings
+    }
     EndDrawing();
 }
 

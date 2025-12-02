@@ -4,6 +4,7 @@
 #include "MainMenu.hpp"
 #include "SceneManager.hpp"
 #include "GameOver.hpp"
+#include "LeaderBoard.hpp"
 #include <iostream>
 
 const int FPS = 60;
@@ -17,12 +18,14 @@ int main() {
     MainMenu* mainMenu = new MainMenu();
     Stage1* stage1 = new Stage1();
     GameOver* gameOver = new GameOver();
+    LeaderBoard* leaderBoard = new LeaderBoard();
 
     stage1->setGameOverScene(gameOver);
 
     Globals::sceneManager->registerScene(mainMenu, 0);
     Globals::sceneManager->registerScene(stage1, 1);
     Globals::sceneManager->registerScene(gameOver, 2);
+    Globals::sceneManager->registerScene(leaderBoard, 3);
     Globals::sceneManager->switchScene(0);
 
     std::cout << "Program started" << std::endl;

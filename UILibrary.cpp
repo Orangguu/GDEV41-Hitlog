@@ -114,3 +114,54 @@ int UILibrary::progressBar(int id, const Rectangle& bounds, int progressCurrentV
 
     return progressCurrentValue;
 }
+
+bool UILibrary::input(int id, InputField &field, float fontSize, Color textColor, Color bgColor) {
+    Vector2 mousePos = GetMousePosition();
+
+    // Hover detection
+    if (CheckCollisionPointRec(mousePos, field.bounds)) {
+        hot = id;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            active = id;
+            field.isActive = true;
+        }
+    } else if (hot == id) {
+        hot = -1;
+    }
+
+    // Deactivate if clicked outside
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !CheckCollisionPointRec(mousePos, field.bounds)) {
+        if (active == id) {
+            active = -1;
+            field.isActive = false;
+        }
+    }
+
+    // Handle keyboard input
+    if (field.isActive) {
+        int key = GetCharPressed();
+        while (key > 0) {
+            if (field.text.size() < field.maxLength) {
+                field.text += (char)key;
+            }
+            key = GetCharPressed();
+        }
+
+        // Backspace
+        if (IsKeyPressed(KEY_BACKSPACE) && !field.text.empty()) {
+            field.text.pop_back();
+        }
+    }
+
+    // Draw background
+    DrawRectangleRec(field.bounds, bgColor);
+
+    // Draw text (or placeholder if empty)
+    std::string displayText = field.text.empty() ? field.placeholder : field.text;
+    if (field.isActive && !field.text.empty()) displayText += "_"; // simple cursor
+
+    Vector2 textSize = MeasureTextEx(font, displayText.c_str(), fontSize, 0);
+    DrawTextEx(font, displayText.c_str(), {field.bounds.x + 5, field.bounds.y + (field.bounds.height - textSize.y) / 2}, fontSize, 0, textColor);
+
+    return field.isActive;
+}
