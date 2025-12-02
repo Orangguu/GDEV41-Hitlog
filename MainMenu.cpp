@@ -11,7 +11,7 @@ void MainMenu::draw() {
 
         // Start Game button
     if (ui.button(1, "Start Game", {611, 565, 258, 58}, 48)) {
-        Globals::sceneManager->switchScene(1); // go to Stage 1
+        Globals::sceneManager->switchScene(1); // Start game
     }
 
     // Leaderboard button
@@ -20,24 +20,29 @@ void MainMenu::draw() {
     }
 
     // Settings button
-    if (ui.button(3, "Settings", {646, 705, 188, 58}, 48)) {
-        // open settings
+    if (ui.button(3, Globals::music_enabled ? "Music: ON" : "Music: OFF", {646, 705, 188, 58}, 48)) {
+        Globals::music_enabled = !Globals::music_enabled; // Toggle music on and off
     }
     EndDrawing();
 }
 
 void MainMenu::enter() {
-    bgMusic = LoadSound("./assets/music/music_main_menu.wav");
+    bgMusic = ResourceManager::getSound("./assets/music/music_main_menu.wav");
     bgTexture = ResourceManager::getTexture("assets/backgrounds/title-screen.png");
-    PlaySound(bgMusic);
-}
-
-void MainMenu::update(float delta) {
-    if (!IsSoundPlaying(bgMusic)) {
+    if (Globals::music_enabled) {
         PlaySound(bgMusic);
     }
 }
 
+void MainMenu::update(float delta) {
+    if (Globals::music_enabled && !IsSoundPlaying(bgMusic)) {
+        PlaySound(bgMusic);
+    }
+    else if (!Globals::music_enabled){
+        StopSound(bgMusic);
+    }
+}
+
 void MainMenu::exit() {
-    UnloadSound(bgMusic);
+    ResourceManager::unloadAll();
 }

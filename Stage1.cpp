@@ -8,16 +8,8 @@
 #include <iostream>
 #include <algorithm>
 
-// Add these new variables in Stage1.hpp (or at the top of Stage1.cpp)
 float baseSpawnInterval = 3.0f;    // starting spawn interval
 float minSpawnInterval  = 0.5f;    // minimum spawn interval
-
-/*
-float nextWaveTime       = 5.0f;   // time for the next enemy wave
-int waveNumber           = 1;      // keeps track of waves
-*/
-
-
 float spawnTimer = 0.0f;
 
 
@@ -27,7 +19,6 @@ bool checkCollision(const Bullet &b, const Enemy &e) {
 }
 
 using namespace std;
-//vector<Enemy> enemies;
 void Stage1::update(float delta) {
     // Check for game over
     if (player.health <= 0) {
@@ -78,24 +69,6 @@ void Stage1::update(float delta) {
         int randomType = (rand() % maxType) + 1;
         e.spawn(randomType);
     }
-
-    // Periodic waves WIP
-    /*
-    if (survivalTime >= nextWaveTime) {
-        nextWaveTime += 15.0f; // waves every 15 seconds
-        waveNumber++;
-
-        int numEnemies = 1 + waveNumber * 1.5; // increase number each wave
-        for (int i = 0; i < numEnemies; i++) {
-            enemies.emplace_back();
-            Enemy& e = enemies.back();
-            int maxType = 1;
-            if (survivalTime > 30) maxType = 2;
-            int randomType = (rand() % maxType) + 1;
-            e.spawn(randomType);
-        }
-    }
-    */
 
     // UPDATE ENEMIES & BACON SHOOTING
     for (Enemy &e : enemies){
@@ -153,6 +126,10 @@ void Stage1::update(float delta) {
 
     player.update(delta);
     hud.update(delta);
+
+    if (Globals::music_enabled && !IsSoundPlaying(bgMusic)) {
+        PlaySound(bgMusic);
+    }
 }
 
 void Stage1::draw() {
@@ -174,8 +151,9 @@ void Stage1::enter() {
         // reset game state
         killCount = 0;
         survivalTime = 0.0f;
-        player.health = 6;
+        player.health = player.maxHealth;
         player.pos = {750, 500}; // centre of screen
+        player.is_dashing = false;
         bullets.clear();
         enemies.clear();
         // load background texture
@@ -191,6 +169,11 @@ void Stage1::enter() {
         // load bullet texture
         Bullet::defaultTexture = ResourceManager::getTexture("assets/entities/bullet.png");
 
+        // load music
+        bgMusic = ResourceManager::getSound("./assets/music/music_stage_1.wav");
+        if (Globals::music_enabled) {
+            PlaySound(bgMusic);
+        }
     } catch (const std::exception& e) {
         std::cerr << "Failed to load Stage1 assets: " << e.what() << std::endl;
     }
@@ -199,5 +182,6 @@ void Stage1::enter() {
 }
 
 void Stage1::exit() {
+    ResourceManager::unloadAll();
 }
 

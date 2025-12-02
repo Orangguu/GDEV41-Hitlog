@@ -17,7 +17,8 @@ struct Player {
     //Initial position
     float radius = 30.0f;
     Color color = BLUE;
-    int health = 2;
+    int maxHealth = 6;
+    int health;
     Vector2 pos;
 
     //Size of the grid
@@ -34,8 +35,7 @@ struct Player {
     int frameY = 1;
     
     float animTimer = 0.0f;
-    float skillCd = 2.0f;
-    float attackCd = 0.5f;
+    float attackCd = 0.3f;
 
     // Textures
     Texture2D animTexture;
@@ -50,8 +50,8 @@ struct Player {
 
     // Dashing
     bool is_dashing = false;
-    float dashDistance = 300.0f;
-    float dashDuration = 0.3f;     // How long the dash lasts (seconds)
+    float dashDistance = 200.0f;
+    float dashDuration = 0.2f;     // How long the dash lasts (seconds)
     float dashTimer = 0.0f;
     float dashCooldown = 1.0f;     // Time before next dash
     float dashCooldownTimer = 0.0f;

@@ -26,6 +26,7 @@ class Stage1 : public Scene {
         GameOver* gameOverScene = nullptr;
     
     public:
+        Sound bgMusic;
         void enter() override;
         void update(float delta) override;
         void draw() override;

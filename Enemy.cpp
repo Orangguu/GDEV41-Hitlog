@@ -1,16 +1,6 @@
 #include "Enemy.hpp"
 #include <raymath.h>
 #include <iostream>
-// states:
-// - following
-// - attacking
-
-// reference for randomizer:
-// https://medium.com/@manikireeti007/random-number-generator-in-c-32896406bb1a
-
-// assuming there is a spritesheet
-// sprites in the sheet should be unraveled into a vector
-// then inserted into "sprites" with the name of the animation
 
 Texture2D Enemy::defaultTexture = {0};
 void Enemy::spawn(int type) {

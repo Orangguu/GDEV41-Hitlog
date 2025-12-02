@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "LeaderBoard.hpp"
 #include "globals.hpp"
+#include "ResourceManager.hpp"
 
 struct PlayerScore {
     std::string name;
@@ -31,13 +32,21 @@ void LeaderBoard::enter() {
         file.close();
     }
 
-    // Optional: sort scores descending
+    // Sort scores descending
     std::sort(scores.begin(), scores.end(), [](const PlayerScore& a, const PlayerScore& b) {
         return a.score > b.score;
     });
+
+    bgMusic = ResourceManager::getSound("./assets/music/music_leaderboard.wav");
+    if (Globals::music_enabled) {
+        PlaySound(bgMusic);
+    }
 }
 
 void LeaderBoard::update(float delta){
+    if (Globals::music_enabled && !IsSoundPlaying(bgMusic)) {
+        PlaySound(bgMusic);
+    }
 }
 
 void LeaderBoard::draw() {
@@ -50,7 +59,7 @@ void LeaderBoard::draw() {
 
     // Draw big "Leaderboard" title
     ui.text(0, "LEADERBOARD", {100, 50, 1200, 100}, 96, Color{255, 215, 0, 255}); 
-    
+
     // x, y, width, height, font size, color
     // Display top scores
     float y = 200.0f; // starting y position
@@ -76,4 +85,5 @@ void LeaderBoard::draw() {
 }
 
 void LeaderBoard::exit(){
+    ResourceManager::unloadAll();
 }

@@ -10,10 +10,20 @@ void GameOver::enter() {
     playerName = {"", 12, {100, 400, 300, 50}, false, "Enter name..."}; //Resets the fields
     try {
         bgTexture = ResourceManager::getTexture("assets/backgrounds/gameover.png");
+        bgMusic = ResourceManager::getSound("./assets/music/music_game_over.wav");
+        if (Globals::music_enabled) {
+            PlaySound(bgMusic);
+        }
     } catch (const std::exception& e) {}
+    
 }
 
-void GameOver::update(float delta) {}
+void GameOver::update(float delta) {
+    if (Globals::music_enabled && !IsSoundPlaying(bgMusic)) {
+        PlaySound(bgMusic);
+    }
+    
+}
 
 void GameOver::draw() {
     BeginDrawing();
@@ -67,4 +77,6 @@ void GameOver::draw() {
     EndDrawing();
 }
 
-void GameOver::exit() {}
+void GameOver::exit() {
+    ResourceManager::unloadAll();
+}

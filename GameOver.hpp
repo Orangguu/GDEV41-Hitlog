@@ -24,6 +24,7 @@ class GameOver : public Scene {
             }
         }
     public:
+        Sound bgMusic;
         void setStats(int kills, float time) { 
             finalKills = kills; 
             finalTime = time; 
