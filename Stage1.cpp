@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
 #include "Enemy.hpp"
+#include "globals.hpp"
 #include "ResourceManager.hpp"
 #include <vector>
 #include <iostream>
@@ -19,12 +20,21 @@ bool checkCollision(const Bullet &b, const Enemy &e) {
 using namespace std;
 //vector<Enemy> enemies;
 void Stage1::update(float delta) {
+    // Check for game over
+    if (player.health <= 0) {
+        Globals::sceneManager->switchScene(2); // Switch to game over scene
+        return;
+    }
+    
+    // Update survival time
+    survivalTime += delta;
+    
     bulletTimer += delta;
 
-    // BULLET HANDLING
+    // PLAYER BULLET HANDLING
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && bulletTimer >= bulletCooldown) {
         Bullet b;
-
+        b.isEnemyBullet = false;
         Vector2 startPos = {
             player.pos.x,
             player.pos.y
@@ -40,62 +50,72 @@ void Stage1::update(float delta) {
     for (Bullet &b : bullets)
         b.update(delta);
 
-   
-
-
-    // BULLET COLLISION (WALL AND ENEMY)
-
-    // ENEMY COLLISION (PLAYER)
-    /*
-        for(Enemy &e : enemies)
-            e.update(delta)
-            e.checkCollision
-
-        // REMOVE DEAD ENEMIES
-        enemies.erase(
-            remove_if(bullets.begin(), bullets.end(),
-                [](const Bullet &b) { return !b.active; }),
-            bullets.end()
-        );
-    */
-
+    // ENEMY SPAWNING
     spawnTimer += delta;
     if (spawnTimer >= 3.0f){
         spawnTimer = 0;
 
-        enemies.emplace_back();        // NEW ENEMY IN VECTOR
-        Enemy& e = enemies.back();     // REFERENCE IT
+        enemies.emplace_back();
+        Enemy& e = enemies.back();
         int randomType = (rand() % 2) + 1;
         e.spawn(randomType);
     }
 
-   
-    // UPDATE PLAYER
+    // UPDATE ENEMIES & BACON SHOOTING
     for (Enemy &e : enemies){
         e.targetPlayer = player;
         e.update(delta);
+        
+        // bacon shoots bullets
+        if (e.enemyType == 1 && e.shootTimer >= e.shootCooldown) {
+            float distanceToPlayer = Vector2Distance(e.pos, player.pos);
+            if (distanceToPlayer <= e.shootRange) {
+                Bullet b;
+                b.isEnemyBullet = true;
+                b.radius = 15.0f;
+                b.speed = 400;
+                b.fire(e.pos, player.pos);
+                bullets.push_back(b);
+                e.shootTimer = 0.0f;
+            }
+        }
     }
 
+    // PLAYER BULLET vs ENEMY COLLISION
     for (Bullet &b : bullets) {
+        if (b.isEnemyBullet) continue; // skip enemy bullets
+        
         for (Enemy &e : enemies) {
             if (!b.active || !e.active) continue;
-            if (checkCollision(b, e)) {
-                b.active = false;          // bullet disappears
-                e.health -= 25;            // reduce enemy health (adjust damage as needed)
+            if (CheckCollisionCircles(b.pos, b.radius, e.pos, e.radius)) {
+                b.active = false;
+                e.health -= 25;
                 if (e.health <= 0) {
-                    e.active = false;      // enemy dies
+                    e.active = false;
+                    killCount++; // increment kill counter
                 }
             }
         }
     }
 
+    // ENEMY BULLET vs PLAYER COLLISION
+    for (Bullet &b : bullets) {
+        if (!b.isEnemyBullet || !b.active) continue;
+        
+        if (CheckCollisionCircles(b.pos, b.radius, player.pos, player.radius)) {
+            b.active = false;
+            player.health -= 1; // enemy bullets deal 1 damage
+        }
+    }
+
+    // REMOVE DEAD ENEMIES
     enemies.erase(
         remove_if(enemies.begin(), enemies.end(),
             [](const Enemy &e) { return !e.active; }),
         enemies.end()
     );
 
-     // REMOVE INACTIVE BULLETS
+    // REMOVE INACTIVE BULLETS
     bullets.erase(
         remove_if(bullets.begin(), bullets.end(),
             [](const Bullet &b) { return !b.active; }),
@@ -123,22 +143,31 @@ void Stage1::draw() {
 
 void Stage1::enter() {
     try {
-        // Load background texture
+        // reset game state
+        killCount = 0;
+        survivalTime = 0.0f;
+        player.health = 6;
+        player.pos = {750, 500}; // centre of screen
+        bullets.clear();
+        enemies.clear();
+        // load background texture
         bgTexture = ResourceManager::getTexture("assets/backgrounds/tabletop-bg.png");
         
-        // Load player texture
+        // load player texture
         player.animTexture = ResourceManager::getTexture("assets/entities/eggsy-sheet.png");
         player.texturesLoaded = true;
         
-        // Load enemy texture
+        // load enemy texture
         Enemy::defaultTexture = ResourceManager::getTexture("assets/entities/enemy-sheet.png");
     
-        // Load bullet texture
+        // load bullet texture
         Bullet::defaultTexture = ResourceManager::getTexture("assets/entities/bullet.png");
 
     } catch (const std::exception& e) {
         std::cerr << "Failed to load Stage1 assets: " << e.what() << std::endl;
     }
+
+    hud.setStage(this);
 }
 
 void Stage1::exit() {

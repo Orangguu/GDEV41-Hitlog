@@ -57,12 +57,43 @@ void Enemy::spawn(int type) {
 
 void Enemy::update(float delta) {
     Vector2 direction = Vector2Normalize(Vector2Subtract(targetPlayer.pos, pos));
+    float distanceToPlayer = Vector2Distance(pos, targetPlayer.pos);
 
     // update facing direction based on horizontal movement
     facingRight = (direction.x >= 0);
 
-    float speedValue = 150.0f; // could use enemy-specific speed if needed
-    pos = Vector2Add(pos, Vector2Scale(direction, speedValue * delta));
+    // BACON BEHAVIOR (type 1): shoot from range
+    if (enemyType == 1) {
+        // move towards player until in range
+        if (distanceToPlayer > shootRange) {
+            float speedValue = 150.0f;
+            pos = Vector2Add(pos, Vector2Scale(direction, speedValue * delta));
+        }
+        
+        // update shoot timer
+        shootTimer += delta;
+    }
+    // BREAD BEHAVIOR (type 2): chase and deal melee damage
+    else if (enemyType == 2) {
+        float speedValue = 150.0f;
+        pos = Vector2Add(pos, Vector2Scale(direction, speedValue * delta));
+        
+        // check collision with player
+        isCollidingWithPlayer = CheckCollisionCircles(pos, radius, targetPlayer.pos, targetPlayer.radius);
+        
+        if (isCollidingWithPlayer) {
+            collisionTimer += delta;
+            
+            // deal damage every 3 seconds
+            if (collisionTimer >= damageInterval) {
+                targetPlayer.health -= meleeDamage;
+                collisionTimer = 0.0f; // reset for next damage tick
+            }
+        } else {
+            // reset timer if not colliding
+            collisionTimer = 0.0f;
+        }
+    }
 
     // animate frames
     animTimer += delta;

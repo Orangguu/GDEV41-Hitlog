@@ -18,6 +18,17 @@ struct Enemy {
     Player targetPlayer;
     bool facingRight = true;
 
+    // bacon (shooting enemy) properties
+    float shootRange = 400.0f;
+    float shootCooldown = 2.0f;
+    float shootTimer = 0.0f;
+    
+    // bread (melee enemy) properties
+    float collisionTimer = 0.0f;
+    float damageInterval = 3.0f;
+    bool isCollidingWithPlayer = false;
+    int meleeDamage = 1;
+
     //Textures
     static Texture2D defaultTexture;
     Texture2D texture;

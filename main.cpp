@@ -3,21 +3,24 @@
 #include "Stage1.hpp"
 #include "MainMenu.hpp"
 #include "SceneManager.hpp"
+#include "GameOver.hpp"
 #include <iostream>
 
 const int FPS = 60;
 
 int main() {
     SetTargetFPS(FPS);
-    InitWindow(Globals::WINDOW_WIDTH, Globals::WINDOW_HEIGHT, "Pew Pew Pew");
+    InitWindow(Globals::WINDOW_WIDTH, Globals::WINDOW_HEIGHT, "Hitlog");
     InitAudioDevice();
 
     Globals::sceneManager = new SceneManager();
     MainMenu* mainMenu = new MainMenu();
     Stage1* stage1 = new Stage1();
+    GameOver* gameOver = new GameOver();
 
     Globals::sceneManager->registerScene(mainMenu, 0);
     Globals::sceneManager->registerScene(stage1, 1);
+    Globals::sceneManager->registerScene(gameOver, 2);
     Globals::sceneManager->switchScene(0);
 
     std::cout << "Program started" << std::endl;

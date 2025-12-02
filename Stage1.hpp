@@ -18,6 +18,9 @@ class Stage1 : public Scene {
         HUD hud;
 
         Texture2D bgTexture;
+
+        int killCount = 0;
+        float survivalTime = 0.0f;
     
     public:
         void enter() override;
@@ -25,4 +28,9 @@ class Stage1 : public Scene {
         void draw() override;
         void exit() override;
         Vector2 getPlayerPos();
+
+        int getKillCount() const { return killCount; }
+        float getSurvivalTime() const { return survivalTime; }
+        int getPlayerHealth() const { return player.health; }
+        int getPlayerMaxHealth() const { return 6; }
 };
