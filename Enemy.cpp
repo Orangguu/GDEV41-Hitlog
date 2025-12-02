@@ -62,7 +62,7 @@ void Enemy::update(float delta) {
     // update facing direction based on horizontal movement
     facingRight = (direction.x >= 0);
 
-    // BACON BEHAVIOR (type 1): shoot from range
+    // BACON BEHAVIOUR (type 1): shoot from range
     if (enemyType == 1) {
         // move towards player until in range
         if (distanceToPlayer > shootRange) {
@@ -73,7 +73,7 @@ void Enemy::update(float delta) {
         // update shoot timer
         shootTimer += delta;
     }
-    // BREAD BEHAVIOR (type 2): chase and deal melee damage
+    // BREAD BEHAVIOUR (type 2): chase and deal melee damage
     else if (enemyType == 2) {
         float speedValue = 150.0f;
         pos = Vector2Add(pos, Vector2Scale(direction, speedValue * delta));
