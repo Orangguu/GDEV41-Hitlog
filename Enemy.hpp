@@ -9,8 +9,8 @@ struct Enemy {
     int health;
     int speed;
 
-    //enemyType 1 for BACON
-    //enemyType 2 for BREAD
+    //enemyType 1 for BREAD
+    //enemyType 2 for BACON
     int enemyType = 1; 
     float radius = 80.0f;
     bool active = true;

@@ -1,7 +1,9 @@
 # GDEV41-Hitlog
+
 Final project for GDEV 41
 
 Commands to compile all files
+
 ```bash
 g++ -c main.cpp -I raylib/
 g++ -c globals.cpp -I raylib/
@@ -15,8 +17,8 @@ g++ -c ResourceManager.cpp -I raylib/
 g++ -c Enemy.cpp -I raylib/
 g++ -c HUD.cpp -I raylib/
 g++ -c GameOver.cpp -I raylib/
-g++ -c LeaderBoard.cpp -I raylib/
-g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o HUD.o GameOver.o LeaderBoard.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+g++ -c Leaderboard.cpp -I raylib/
+g++ main.o globals.o Player.o Bullet.o UILibrary.o Stage1.o MainMenu.o SceneManager.o ResourceManager.o Enemy.o HUD.o GameOver.o Leaderboard.o -o game -L raylib/ -lraylib -lopengl32 -lgdi32 -lwinmm
 ```
 
 raylib documentation: https://www.raylib.com/cheatsheet/cheatsheet.html

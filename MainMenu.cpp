@@ -16,7 +16,7 @@ void MainMenu::draw() {
 
     // Leaderboard button
     if (ui.button(2, "Leaderboard", {611, 635, 258, 58}, 48)) {
-        Globals::sceneManager->switchScene(3); // go to LeaderBoard scene
+        Globals::sceneManager->switchScene(3); // go to Leaderboard scene
     }
 
     // Settings button

@@ -48,7 +48,7 @@ void Stage1::update(float delta) {
     for (Bullet &b : bullets)
         b.update(delta);
 
-    // ===== ENEMY SPAWNING WITH SCALING =====
+    // ENEMY SPAWNING WITH SCALING
     spawnTimer += delta;
 
     // Smooth spawn interval decreases as time passes
