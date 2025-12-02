@@ -1,8 +1,5 @@
 #include "globals.hpp"
 
-// sceneManager is properly initialized in main.cpp
-// it will not worked if initialized here
-// (for reasons i am yet to discover)
 bool Globals::music_enabled = true;
 int Globals::WINDOW_HEIGHT = 1000;
 int Globals::WINDOW_WIDTH = 1500;

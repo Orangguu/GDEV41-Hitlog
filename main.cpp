@@ -4,7 +4,7 @@
 #include "MainMenu.hpp"
 #include "SceneManager.hpp"
 #include "GameOver.hpp"
-#include "LeaderBoard.hpp"
+#include "Leaderboard.hpp"
 #include <iostream>
 
 const int FPS = 60;

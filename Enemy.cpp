@@ -2,6 +2,8 @@
 #include <raymath.h>
 #include <iostream>
 
+// enemy sprites from Ivan Dixon
+
 Texture2D Enemy::defaultTexture = {0};
 void Enemy::spawn(int type) {
     enemyType = type;
