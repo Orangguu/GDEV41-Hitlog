@@ -22,6 +22,9 @@ using namespace std;
 void Stage1::update(float delta) {
     // Check for game over
     if (player.health <= 0) {
+        if (gameOverScene) {
+            gameOverScene->setStats(killCount, survivalTime);
+        }
         Globals::sceneManager->switchScene(2); // Switch to game over scene
         return;
     }
@@ -63,7 +66,7 @@ void Stage1::update(float delta) {
 
     // UPDATE ENEMIES & BACON SHOOTING
     for (Enemy &e : enemies){
-        e.targetPlayer = player;
+        e.targetPlayer = &player;
         e.update(delta);
         
         // bacon shoots bullets

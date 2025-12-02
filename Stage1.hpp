@@ -2,6 +2,7 @@
 #include "Scene.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "GameOver.hpp"
 #include <raylib.h>
 #include "Enemy.hpp"
 #include <vector>
@@ -21,6 +22,8 @@ class Stage1 : public Scene {
 
         int killCount = 0;
         float survivalTime = 0.0f;
+
+        GameOver* gameOverScene = nullptr;
     
     public:
         void enter() override;
@@ -28,6 +31,7 @@ class Stage1 : public Scene {
         void draw() override;
         void exit() override;
         Vector2 getPlayerPos();
+        void setGameOverScene(GameOver* go) { gameOverScene = go; }
 
         int getKillCount() const { return killCount; }
         float getSurvivalTime() const { return survivalTime; }

@@ -18,6 +18,8 @@ int main() {
     Stage1* stage1 = new Stage1();
     GameOver* gameOver = new GameOver();
 
+    stage1->setGameOverScene(gameOver);
+
     Globals::sceneManager->registerScene(mainMenu, 0);
     Globals::sceneManager->registerScene(stage1, 1);
     Globals::sceneManager->registerScene(gameOver, 2);

@@ -15,7 +15,7 @@ struct Enemy {
     float radius = 80.0f;
     bool active = true;
     Vector2 pos;
-    Player targetPlayer;
+    Player* targetPlayer = nullptr;
     bool facingRight = true;
 
     // bacon (shooting enemy) properties
