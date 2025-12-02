@@ -7,7 +7,7 @@ void Enemy::spawn(int type) {
     enemyType = type;
     frameX = 0;
     if(enemyType == 1){ //Bread
-        health = 100;
+        health = 75;
         speed = 50;
         frameY = 2;
     }

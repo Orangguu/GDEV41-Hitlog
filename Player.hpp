@@ -35,7 +35,8 @@ struct Player {
     int frameY = 1;
     
     float animTimer = 0.0f;
-    float attackCd = 0.3f;
+    float baseAttackCd = 0.4f;
+    float attackCd = baseAttackCd;
 
     // Textures
     Texture2D animTexture;

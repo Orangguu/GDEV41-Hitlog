@@ -11,7 +11,7 @@
 float baseSpawnInterval = 3.0f;    // starting spawn interval
 float minSpawnInterval  = 0.5f;    // minimum spawn interval
 float spawnTimer = 0.0f;
-
+float attackTimer = 0.0f;
 
 //HELPER FUNCTIONS
 bool checkCollision(const Bullet &b, const Enemy &e) {
@@ -32,16 +32,16 @@ void Stage1::update(float delta) {
     // Update survival time
     survivalTime += delta;
     
-    bulletTimer += delta;
+    attackTimer += delta;
 
     // PLAYER BULLET HANDLING
-    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && bulletTimer >= bulletCooldown) {
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && attackTimer >= player.attackCd ) {
         Bullet b;
         b.isEnemyBullet = false;
         Vector2 startPos = { player.pos.x, player.pos.y };
         b.fire(startPos, GetMousePosition());
         bullets.push_back(b);
-        bulletTimer = 0;
+        attackTimer = 0;
     }
 
     // UPDATE ALL BULLETS
@@ -68,6 +68,11 @@ void Stage1::update(float delta) {
         // Add more types if needed
         int randomType = (rand() % maxType) + 1;
         e.spawn(randomType);
+    }
+
+    // Buff player attack speed after 1 minute
+     if (survivalTime > 60){
+        player.attackCd = 0.2f;
     }
 
     // UPDATE ENEMIES & BACON SHOOTING
@@ -152,6 +157,7 @@ void Stage1::enter() {
         killCount = 0;
         survivalTime = 0.0f;
         player.health = player.maxHealth;
+        player.attackCd = player.baseAttackCd;
         player.pos = {750, 500}; // centre of screen
         player.is_dashing = false;
         bullets.clear();
