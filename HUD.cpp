@@ -2,6 +2,8 @@
 #include "Stage1.hpp"
 #include <string>
 
+
+
 void HUD::update(float delta) {
     // get player current health and max health
 }
@@ -24,5 +26,28 @@ void HUD::draw() {
         int seconds = (int)stage->getSurvivalTime() % 60;
         std::string timeStr = std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds);
         ui.text(4, timeStr, {650, 22, 200, 69}, 48, WHITE);
+
+
+        // Instructions
+        std::string controls = "WASD - Movement\nSPACE - Dash\nLEFT CLICK - Shoot";
+        int screenW = GetScreenWidth();
+        int screenH = GetScreenHeight();
+        int padding = 20;
+        float fontSize = 50;
+        Color textColor = BLACK;
+
+        // Measure total text height
+        Vector2 textSize = MeasureTextEx(ui.font, "W", fontSize, 0); // approximate line height
+        int lineHeight = (int)textSize.y;
+
+        // Draw each line manually
+        std::vector<std::string> lines = {"WASD - Movement", "SPACE - Dash", "LEFT CLICK - Shoot"};
+        for (size_t i = 0; i < lines.size(); ++i) {
+            Vector2 pos = {
+                (float)(screenW - padding - MeasureTextEx(ui.font, lines[i].c_str(), fontSize, 0).x),
+                (float)(screenH - padding - (lines.size() - i) * lineHeight)
+            };
+            DrawTextEx(ui.font, lines[i].c_str(), pos, fontSize, 0, textColor);
+        }
     }
 }

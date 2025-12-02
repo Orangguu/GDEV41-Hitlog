@@ -71,7 +71,7 @@ void Stage1::update(float delta) {
     }
 
     // Buff player attack speed after 1 minute
-     if (survivalTime > 60){
+     if (survivalTime > 40){
         player.attackCd = 0.2f;
     }
 
